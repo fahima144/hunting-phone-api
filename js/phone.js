@@ -44,7 +44,7 @@ const displayPhones = (phones, isShowAll) => {
             <p>There are many variations of passages of available, but the majority have suffered</p>
             <p>$999</p>
             <div class="card-actions justify-center">
-                <button onclick="handleShowDetail('${phone.slug}')" class="btn bg-[#0D6EFD] text-[#FFFFFF]">Show Details</button>
+                <button onclick="handleShowDetail('${phone.slug}'); show_details_modal.showModal()" class="btn bg-[#0D6EFD] text-[#FFFFFF]">Show Details</button>
             </div>
         </div>
         `;
@@ -57,8 +57,12 @@ const displayPhones = (phones, isShowAll) => {
 }
 
 // 
-const handleShowDetail = (id) =>{
+const handleShowDetail =async (id) =>{
    console.log('clicked show detail', id);
+   // load single data
+   const res = await fetch(`https://openapi.programming-hero.com/api/phone/${id}`);
+   const data = await res.json();
+   console.log(data);
 }
 
 // handle search button
@@ -87,4 +91,4 @@ const handleShowAll = () => {
 }
 
 
-// loadPhone();
+loadPhone();
