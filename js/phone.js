@@ -8,7 +8,7 @@ const loadPhone = async (searchText, isShowAll) => {
 
 
 const displayPhones = (phones, isShowAll) => {
-    console.log(phones);
+    // console.log(phones);
 
     const phoneContainer = document.getElementById('phone-container');
     // clear phone container cards before adding new cards
@@ -22,7 +22,7 @@ const displayPhones = (phones, isShowAll) => {
     else {
         showAllContainer.classList.add('hidden');
     }
-    console.log('is show all', isShowAll);
+    // console.log('is show all', isShowAll);
     // display only first 12 phones if not show all
     if (!isShowAll) {
         phones = phones.slice(0,12);
@@ -31,7 +31,7 @@ const displayPhones = (phones, isShowAll) => {
     }
 
     phones.forEach(phone =>{
-        console.log(phone);
+        // console.log(phone);
         // 2. create a div
         const phoneCard = document.createElement('div');
         phoneCard.classList = `card w-96 bg-gray-100 p-4 shadow-xl`;
@@ -58,11 +58,37 @@ const displayPhones = (phones, isShowAll) => {
 
 // 
 const handleShowDetail =async (id) =>{
-   console.log('clicked show detail', id);
+//    console.log('clicked show detail', id);
    // load single data
    const res = await fetch(`https://openapi.programming-hero.com/api/phone/${id}`);
    const data = await res.json();
-   console.log(data);
+   const phone = data.data;
+
+   showPhoneDetails(phone);
+
+}
+
+const showPhoneDetails = (phone) => {
+    console.log(phone);
+    const phoneName = document.getElementById('show-detail-phone-name');
+    phoneName.innerText = phone.name;
+
+    const showDetailContainer = document.getElementById('show-detail-container');
+    showDetailContainer.innerHTML = `
+    <img src="${phone.image}" alt="" />
+    <p><span>Storage:</span>${phone?.mainFeatures.storage}</p>
+    <p><span>Display Size:</span>${phone?.mainFeatures.displaySize}</p>
+    <p><span>Memory:</span>${phone?.mainFeatures.memory}</p>
+    <p><span>Slug:</span>${phone?.slug}</p>
+    <p><span>Release Date:</span>${phone?.releaseDate}</p>
+    <p><span>Brand:</span>${phone?.brand}</p>
+    <p><span>GPS:</span>${phone?.others?.GPS || 'No GPS available'}</p>
+    `
+
+
+
+    // show the modal
+    show_details_modal.showModal();
 }
 
 // handle search button
@@ -70,7 +96,7 @@ const handleSearch = (isShowAll) => {
     toggleLoadingSpinner(true);
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
-    console.log(searchText);
+    // console.log(searchText);
     loadPhone(searchText, isShowAll);
 }
 
